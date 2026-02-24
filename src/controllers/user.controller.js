@@ -23,17 +23,15 @@ const updateUser = async (req, res) => {
   }
 
   user.fullname = req.body.fullname || user.fullname;
-  user.username = req.body.username || user.username;
   user.email = req.body.email || user.email;
   user.password = req.body.password || user.password;
   user.role = req.body.role || user.role;
 
-  const updatedUser = user.save();
+  const updatedUser = await user.save();
 
   res.json({
-    _id: updatedUser._i,
+    _id: updatedUser._id,
     fullname: updatedUser.fullname,
-    username: updatedUser.username,
     email: updatedUser.email,
     role: updatedUser.role,
   });
@@ -51,15 +49,14 @@ const deleteUser = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const { fullname, username, email, password } = req.body;
+  const { fullname, email, password } = req.body;
 
-  const userExists = await User.findOne({ email });
+  const userExists = await Users.findOne({ email });
   if (userExists)
     return res.status(400).json({ message: "User Already Exists" });
 
-  const user = await User.create({
+  const user = await Users.create({
     fullname,
-    username,
     email,
     password,
     role: role || "User",
@@ -68,7 +65,6 @@ const createUser = async (req, res) => {
   res.status(201).json({
     _id: user._id,
     fullname: user.fullname,
-    username: user.username,
     email: user.email,
     role: user.role,
   });
