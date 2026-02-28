@@ -14,8 +14,8 @@ const register = async (req, res) => {
   res.status(201).json({
     _id: user._id,
     fullname: user.fullname,
-    username: user.username,
     email: user.email,
+    role: user.role,
     token: generateToken(user),
   });
 };
@@ -28,8 +28,8 @@ const login = async (req, res) => {
     res.json({
       _id: user._id,
       fullname: user.fullname,
-      username: user.username,
       email: user.email,
+      role: user.role,
       token: generateToken(user),
     });
   } else {
