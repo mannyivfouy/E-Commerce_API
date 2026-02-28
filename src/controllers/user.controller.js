@@ -49,7 +49,7 @@ const deleteUser = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const { fullname, email, password } = req.body;
+  const { fullname, email, password, role } = req.body;
 
   const userExists = await Users.findOne({ email });
   if (userExists)
