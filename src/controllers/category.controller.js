@@ -55,7 +55,7 @@ const updateCategory = async (req, res) => {
     }
 
     if (status === false) {
-      await Products.updateMany({ categoty: req.params.id }, { status: false });
+      await Products.updateMany({ category: req.params.id }, { status: false });
     }
 
     res.json({
