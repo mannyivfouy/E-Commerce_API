@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
-    fullname: { type: String, required: true },    
+    fullname: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
     role: { type: String, enum: ["User", "Admin"], default: "User" },
@@ -17,7 +17,7 @@ userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(
     this.password,
     parseInt(process.env.BCRYPT_SALT_ROUNDS),
-  );  
+  );
 });
 
 userSchema.methods.matchPassword = async function (password) {
