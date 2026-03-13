@@ -24,6 +24,7 @@ const orderSchema = new mongoose.Schema(
       enum: ["Pending", "Paid", "Canceled"],
       default: "Pending",
     },
+    paymentUrl: { type: String },
   },
   { timestamps: true },
 );
