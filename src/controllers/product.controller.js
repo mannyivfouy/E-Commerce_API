@@ -17,7 +17,9 @@ const createProduct = async (req, res) => {
         .json({ message: "Cannot Add Product To Inactive Category" });
     }
 
-    const product = await Products.create(req.body);
+    const image = req.file ? `/uploads/${req.file.filename}` : null;
+
+    const product = await Products.create({...req.body, image});
 
     res.status(201).json({
       message: "Product Create Successfully",
@@ -68,6 +70,10 @@ const updateProduct = async (req, res) => {
           .status(400)
           .json({ message: "Cannot Move Product To Inactive Category" });
       }
+    }
+
+    if (req.file) {
+      req.body.image = `/uploads/${req.file.filename}`;
     }
 
     const product = await Products.findByIdAndUpdate(req.params.id, req.body, {
