@@ -35,6 +35,7 @@ const updateUser = async (req, res) => {
     user.email = req.body.email || user.email;
     user.password = req.body.password || user.password;
     user.role = req.body.role || user.role;
+    user.status = req.body.status || user.status;
 
     const updatedUser = await user.save();
 
@@ -43,6 +44,7 @@ const updateUser = async (req, res) => {
       fullname: updatedUser.fullname,
       email: updatedUser.email,
       role: updatedUser.role,
+      status: updatedUser.status,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -67,7 +69,7 @@ const deleteUser = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    const { fullname, email, password, role } = req.body;
+    const { fullname, email, password, role, status } = req.body;
 
     const userExists = await Users.findOne({ email });
 
@@ -80,6 +82,7 @@ const createUser = async (req, res) => {
       email,
       password,
       role: role || "User",
+      status,
     });
 
     res.status(201).json({
@@ -87,6 +90,7 @@ const createUser = async (req, res) => {
       fullname: user.fullname,
       email: user.email,
       role: user.role,
+      status: user.status,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
