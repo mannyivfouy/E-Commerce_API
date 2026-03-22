@@ -23,7 +23,7 @@ const checkout = async (req, res) => {
       0,
     );
 
-    const paywayLink = process.env.ABA_PAYWAY_LINK;
+    const paywayLink = $process.env.ABA_PAYWAY_LINK
 
     const order = await Orders.create({
       user: req.user._id,
