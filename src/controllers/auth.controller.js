@@ -3,7 +3,7 @@ const generateToken = require("../utils/generateToken.util");
 
 const register = async (req, res) => {
   try {
-    const { fullname, username, email, password } = req.body;
+    const { fullname, username, email, password, status } = req.body;
 
     const userExists = await Users.findOne({ email });
 
@@ -16,6 +16,7 @@ const register = async (req, res) => {
       username,
       email,
       password,
+      status,
     });
 
     res.status(201).json({
