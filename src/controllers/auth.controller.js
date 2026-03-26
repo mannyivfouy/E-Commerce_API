@@ -36,17 +36,26 @@ const login = async (req, res) => {
 
     const user = await Users.findOne({ email });
 
-    if (user && (await user.matchPassword(password))) {
-      res.json({
-        _id: user._id,
-        fullname: user.fullname,
-        email: user.email,
-        role: user.role,
-        token: generateToken(user),
-      });
-    } else {
-      res.status(401).json({ message: "Invalid Email or Password" });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid Email or Password" });
     }
+
+    if (!user.status) {
+      return res.status(403).json({ message: "Your Account Is Inactive" });
+    }
+
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid Email or Password" });
+    }
+
+    res.json({
+      _id: user._id,
+      fullname: user.fullname,
+      email: user.email,
+      role: user.role,
+      token: generateToken(user),
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
