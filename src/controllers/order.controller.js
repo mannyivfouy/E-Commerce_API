@@ -1,6 +1,5 @@
 const Orders = require("../models/order.model");
 const Carts = require("../models/cart.model");
-require("dotenv").config();
 
 const checkout = async (req, res) => {
   try {
@@ -23,27 +22,35 @@ const checkout = async (req, res) => {
       0,
     );
 
-    const paywayLink = $process.env.ABA_PAYWAY_LINK
-
     const order = await Orders.create({
       user: req.user._id,
       items: orderItems,
       totalPrice,
       status: "Pending",
-      paymentUrl: paywayLink,
     });
 
     cart.items = [];
     await cart.save();
 
     res.json({
-      message: "Order Created. Pay Using ABA PAYWAY",
+      message: "Order Created",
       order,
-      paywayLink,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = { checkout };
+const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Orders.find()
+      .populate("user", "fullname email")
+      .populate("items.product", "productName price")
+      .sort({ createdAt: -1 });
+    res.json(orders);    
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { checkout, getAllOrders };
